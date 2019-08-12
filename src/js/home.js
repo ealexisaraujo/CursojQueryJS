@@ -30,21 +30,21 @@ const getUser = new Promise(function(todoBien, todoMal) {
 //   .catch(function(message) {
 //     console.log(message)
 //   })
+// Promesas con race u all
+// Promise.race([
+//   getUser,
+//   getUserAll,
+// ])
+// .then(function(message) {
+//   console.log(message);
+// })
+// .catch(function(message) {
+//   console.log(message)
+// })
 
-Promise.race([
-  getUser,
-  getUserAll,
-])
-.then(function(message) {
-  console.log(message);
-})
-.catch(function(message) {
-  console.log(message)
-})
 
-
-
-// $.ajax('https://randomuser.me/api/sdfdsfdsfs', {
+// XMLHttpRequest jquery example
+// $.ajax('https://randomuser.me/api/', {
 //   method: 'GET',
 //   success: function(data) {
 //     console.log(data)
@@ -54,17 +54,17 @@ Promise.race([
 //   }
 // })
 
-// fetch('https://randomuser.me/api/dsfdsfsd')
-//   .then(function (response) {
-//     // console.log(response)
-//     return response.json()
-//   })
-//   .then(function (user) {
-//     console.log('user', user.results[0].name.first)
-//   })
-//   .catch(function() {
-//     console.log('algo falló')
-//   });
+fetch('https://randomuser.me/api/')
+  .then(function (response) {
+    // console.log(response)
+    return response.json()
+  })
+  .then(function (user) {
+    console.log('user', user.results[0].name.first)
+  })
+  .catch(function() {
+    console.log('algo falló')
+  });
 
 
 // (async function load() {
