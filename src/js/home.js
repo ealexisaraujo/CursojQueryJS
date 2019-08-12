@@ -13,7 +13,7 @@ const getUserAll = new Promise(function(todoBien, todoMal) {
     // luego de 3 segundos
     todoBien('se acabó el tiempo');
   }, 5000)
-})
+});
 
 const getUser = new Promise(function(todoBien, todoMal) {
   // llamar a un api
@@ -21,7 +21,7 @@ const getUser = new Promise(function(todoBien, todoMal) {
     // luego de 3 segundos
     todoBien('se acabó el tiempo 3');
   }, 3000)
-})
+});
 
 // getUser
 //   .then(function() {
@@ -66,22 +66,22 @@ fetch('https://randomuser.me/api/')
     console.log('algo falló')
   });
 
-
-// (async function load() {
-//   // await
-//   // action
-//   // terror
-//   // animation
-//   async function getData(url) {
-//     const response = await fetch(url);
-//     const data = await response.json();
-//     if (data.data.movie_count > 0) {
-//       // aquí se acaba
-//       return data;
-//     }
-//     // si no hay pelis aquí continua
-//     throw new Error('No se encontró ningun resultado');
-//   }
+// Funciones asincronas
+(async function load() {
+  //await
+  // action
+  // horror
+  // animation
+  async function getData(url) {
+    const response = await fetch(url);
+    const data = await response.json()
+    return data;
+  }
+  const actionList = await getData('https://yts.lt/api/v2/list_movies.json?genre=action')
+  const dramaList = await getData('https://yts.lt/api/v2/list_movies.json?genre=drama')
+  const animationList = await getData('https://yts.lt/api/v2/list_movies.json?genre=animation')
+  console.log(actionList, dramaList, animationList);
+})()
 //   const $form = document.getElementById('form');
 //   const $home = document.getElementById('home');
 //   const $featuringContainer = document.getElementById('featuring');
@@ -92,7 +92,7 @@ fetch('https://randomuser.me/api/')
 //       $element.setAttribute(attribute, attributes[attribute]);
 //     }
 //   }
-//   const BASE_API = 'https://yts.am/api/v2/';
+//   const BASE_API = 'https://yts.lt/api/v2/';
 
 //   function featuringTemplate(peli) {
 //     return (
