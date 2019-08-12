@@ -81,21 +81,25 @@ fetch('https://randomuser.me/api/')
   const dramaList = await getData('https://yts.lt/api/v2/list_movies.json?genre=drama')
   const animationList = await getData('https://yts.lt/api/v2/list_movies.json?genre=animation')
   console.log(actionList, dramaList, animationList);
+  
+  const $form = document.getElementById('form');
+  const $home = document.getElementById('home');
+  const $featuringContainer = document.getElementById('featuring');
+  
+  const $actionContainer = document.querySelector('action');
+  const $dramaContainer = document.getElementById('drama');
+  const $animationContainer = document.getElementById('animation');
+
+  const $modal = document.getElementById('modal');
+  const $overlay = document.getElementById('overlay');
+  const $hideModal = document.getElementById('hide-modal');
+
+  const $modalTitle = $modal.querySelector('h1');
+  const $modalImage = $modal.querySelector('img');
+  const $modalDescription = $modal.querySelector('p');
 })()
-//   const $form = document.getElementById('form');
-//   const $home = document.getElementById('home');
-//   const $featuringContainer = document.getElementById('featuring');
-
-
-//   function setAttributes($element, attributes) {
-//     for (const attribute in attributes) {
-//       $element.setAttribute(attribute, attributes[attribute]);
-//     }
-//   }
-//   const BASE_API = 'https://yts.lt/api/v2/';
-
-//   function featuringTemplate(peli) {
-//     return (
+  //   function featuringTemplate(peli) {
+    //     return (
 //       `
 //       <div class="featuring">
 //         <div class="featuring-image">
@@ -192,8 +196,6 @@ fetch('https://randomuser.me/api/')
 //   // const { data: { movies: actionList} } = await getData(`${BASE_API}list_movies.json?genre=action`)
 //   const actionList = await cacheExist('action');
 //   // window.localStorage.setItem('actionList', JSON.stringify(actionList))
-//   const $actionContainer = document.querySelector('#action');
-//   renderMovieList(actionList, $actionContainer, 'action');
 
 //   const dramaList = await await cacheExist('drama');
 //   const $dramaContainer = document.getElementById('drama');
