@@ -65,18 +65,24 @@ fetch('https://randomuser.me/api/')
   .catch(function() {
     console.log('algo falló')
   });
-
-// Funciones asincronas
-(async function load() {
-  //await
-  // action
-  // horror
-  // animation
-  async function getData(url) {
-    const response = await fetch(url);
-    const data = await response.json()
-    return data;
+  
+  // Funciones asincronas
+  (async function load() {
+    //await
+    // action
+    // horror
+    // animation
+    async function getData(url) {
+      const response = await fetch(url);
+      const data = await response.json()
+      return data;
   }
+
+  const $form = document.getElementById('form');
+  $form.addEventListener('submit', (event) => {
+    event.preventDefault();
+  })
+
   const actionList = await getData('https://yts.lt/api/v2/list_movies.json?genre=action&sort_by=download_count')
   const dramaList = await getData('https://yts.lt/api/v2/list_movies.json?genre=drama&sort_by=download_count')
   const animationList = await getData('https://yts.lt/api/v2/list_movies.json?genre=animation&sort_by=download_count')
@@ -100,6 +106,13 @@ fetch('https://randomuser.me/api/')
     html.body.innerHTML = HTMLString
     return html.body.children[0]
   }
+  
+    function addEventClick($element) {
+      $element.addEventListener('click', () => {
+        //alert('click')
+        showModal($element)
+      })
+    }
 
   function renderMovieList(list, $container) {
     // actionList.data.movies
@@ -108,10 +121,11 @@ fetch('https://randomuser.me/api/')
       const HTMLString = videoItemTemplate(movie)
       const movieElement = createTemplate(HTMLString)
       $container.append(movieElement)
-    //  console.log(HTMLString);
+      addEventClick(movieElement)
+      //  console.log(HTMLString);
     })
   }
-
+  
   const $actionContainer = document.querySelector('#action');
   renderMovieList(actionList.data.movies,$actionContainer)
 
@@ -121,7 +135,9 @@ fetch('https://randomuser.me/api/')
   const $animationContainer = document.getElementById('animation');
   renderMovieList(animationList.data.movies, $animationContainer);
   
-  const $form = document.getElementById('form');
+
+
+
   const $home = document.getElementById('home');
   const $featuringContainer = document.getElementById('featuring');
     function featuringTemplate(peli) {
@@ -134,14 +150,14 @@ fetch('https://randomuser.me/api/')
         <div class="featuring-content">
           <p class="featuring-title">Pelicula encontrada</p>
           <p class="featuring-album">${peli.title}</p>
-        </div>
-      </div>
-      `
-    )
-  }
-  
-
-
+          </div>
+          </div>
+          `
+          )
+        }
+        
+        
+        
   
   const $modal = document.getElementById('modal');
   const $overlay = document.getElementById('overlay');
@@ -152,15 +168,7 @@ fetch('https://randomuser.me/api/')
   const $modalDescription = $modal.querySelector('p');
 })()
 
-//   $form.addEventListener('submit', async (event) => {
-//     event.preventDefault();
-//     $home.classList.add('search-active')
-//     const $loader = document.createElement('img');
-//     setAttributes($loader, {
-//       src: 'src/images/loader.gif',
-//       height: 50,
-//       width: 50,
-//     })
+
 //     $featuringContainer.append($loader);
 
 //     const data = new FormData($form);
@@ -181,12 +189,6 @@ fetch('https://randomuser.me/api/')
 //   })
 
 
-//   function addEventClick($element) {
-//     $element.addEventListener('click', () => {
-//       // alert('click')
-//       showModal($element)
-//     })
-//   }
 
 //   async function cacheExist(category) {
 //     const listName = `${category}List`;
