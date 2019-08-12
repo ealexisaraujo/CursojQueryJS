@@ -95,22 +95,31 @@ fetch('https://randomuser.me/api/')
     )
   }
 
-  const $actionContainer = document.querySelector('#action');
-
-  actionList.data.movies.forEach((movie)=> {
-    const HTMLString = videoItemTemplate(movie)
+  function createTemplate(HTMLString) {
     const html = document.implementation.createHTMLDocument();
     html.body.innerHTML = HTMLString
-    $actionContainer.append(html.body.children[0])
-  //  console.log(HTMLString);
-  })
+    return html.body.children[0]
+  }
 
+  function renderMovieList(list, $container) {
+    // actionList.data.movies
+    $container.children[0].remove();
+    list.forEach((movie)=> {
+      const HTMLString = videoItemTemplate(movie)
+      const movieElement = createTemplate(HTMLString)
+      $container.append(movieElement)
+    //  console.log(HTMLString);
+    })
+  }
 
+  const $actionContainer = document.querySelector('#action');
+  renderMovieList(actionList.data.movies,$actionContainer)
 
   const $dramaContainer = document.getElementById('drama');
+  renderMovieList(dramaList.data.movies, $dramaContainer);
 
   const $animationContainer = document.getElementById('animation');
-
+  renderMovieList(animationList.data.movies, $animationContainer);
   
   const $form = document.getElementById('form');
   const $home = document.getElementById('home');
@@ -171,29 +180,11 @@ fetch('https://randomuser.me/api/')
 //     }
 //   })
 
-//   function createTemplate(HTMLString) {
-//     const html = document.implementation.createHTMLDocument();
-//     html.body.innerHTML = HTMLString;
-//     return html.body.children[0];
-//   }
+
 //   function addEventClick($element) {
 //     $element.addEventListener('click', () => {
 //       // alert('click')
 //       showModal($element)
-//     })
-//   }
-//   function renderMovieList(list, $container, category) {
-//     // actionList.data.movies
-//     $container.children[0].remove();
-//     list.forEach((movie) => {
-//       const HTMLString = videoItemTemplate(movie, category);
-//       const movieElement = createTemplate(HTMLString);
-//       $container.append(movieElement);
-//       const image = movieElement.querySelector('img');
-//       image.addEventListener('load', (event) => {
-//         event.srcElement.classList.add('fadeIn');
-//       })
-//       addEventClick(movieElement);
 //     })
 //   }
 
@@ -215,19 +206,8 @@ fetch('https://randomuser.me/api/')
 //   // window.localStorage.setItem('actionList', JSON.stringify(actionList))
 
 //   const dramaList = await await cacheExist('drama');
-//   const $dramaContainer = document.getElementById('drama');
-//   renderMovieList(dramaList, $dramaContainer, 'drama');
 
 //   const animationList = await await cacheExist('animation');
-//   const $animationContainer = document.getElementById('animation');
-//   renderMovieList(animationList, $animationContainer, 'animation');
-
-
-
-
-
-
-
 
 //   // const $home = $('.home .list #item');
 //   const $modal = document.getElementById('modal');
@@ -276,6 +256,3 @@ fetch('https://randomuser.me/api/')
 //   }
 
 
-
-
-// })()
