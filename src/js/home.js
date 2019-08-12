@@ -1,27 +1,27 @@
-console.log('hola mundo!');
-const noCambia = "Leonidas";
+// console.log('hola mundo!');
+// const noCambia = "Leonidas";
 
-let cambia = "@LeonidasEsteban"
+// let cambia = "@LeonidasEsteban"
 
-function cambiarNombre(nuevoNombre) {
-  cambia = nuevoNombre
-}
+// function cambiarNombre(nuevoNombre) {
+//   cambia = nuevoNombre
+// }
 
-const getUserAll = new Promise(function(todoBien, todoMal) {
-  // llamar a un api
-  setTimeout(function() {
-    // luego de 3 segundos
-    todoBien('se acabó el tiempo');
-  }, 5000)
-});
+// const getUserAll = new Promise(function(todoBien, todoMal) {
+//   // llamar a un api
+//   setTimeout(function() {
+//     // luego de 3 segundos
+//     todoBien('se acabó el tiempo');
+//   }, 5000)
+// });
 
-const getUser = new Promise(function(todoBien, todoMal) {
-  // llamar a un api
-  setTimeout(function() {
-    // luego de 3 segundos
-    todoBien('se acabó el tiempo 3');
-  }, 3000)
-});
+// const getUser = new Promise(function(todoBien, todoMal) {
+//   // llamar a un api
+//   setTimeout(function() {
+//     // luego de 3 segundos
+//     todoBien('se acabó el tiempo 3');
+//   }, 3000)
+// });
 
 // getUser
 //   .then(function() {
@@ -67,7 +67,7 @@ fetch('https://randomuser.me/api/')
   });
   
   // Funciones asincronas
-  (async function load() {
+(async function load() {
     //await
     // action
     // horror
@@ -80,9 +80,24 @@ fetch('https://randomuser.me/api/')
 
   const $form = document.getElementById('form')
   const $home = document.getElementById('home')
+  const $featuringContainer = document.getElementById('featuring');
+
+  function setAttributes($element, attributes) {
+    for (const attribute in attributes) {
+      $element.setAttribute(attribute, attributes[attribute]);
+    }
+  }
+
   $form.addEventListener('submit', (event) => {
     event.preventDefault();
     $home.classList.add('search-active')
+    const $loader = document.createElement('img')
+    setAttributes($loader, {
+      src: 'src/images/loader.gif',
+      height: 50,
+      width: 50,
+    })
+    $featuringContainer.append($loader);
   })
 
   const actionList = await getData('https://yts.lt/api/v2/list_movies.json?genre=action&sort_by=download_count')
@@ -142,9 +157,8 @@ fetch('https://randomuser.me/api/')
   const $animationContainer = document.getElementById('animation');
   renderMovieList(animationList.data.movies, $animationContainer);
   
-
-  const $featuringContainer = document.getElementById('featuring');
-    function featuringTemplate(peli) {
+  
+  function featuringTemplate(peli) {
         return (
       `
       <div class="featuring">
@@ -158,10 +172,7 @@ fetch('https://randomuser.me/api/')
           </div>
           `
           )
-    }
-        
-        
-        
+  }
   
   const $modal = document.getElementById('modal');
   const $overlay = document.getElementById('overlay');
@@ -210,7 +221,7 @@ fetch('https://randomuser.me/api/')
 //       $loader.remove();
 //       $home.classList.remove('search-active');
 //     }
-//   })
+//   }) 
 
 
 
