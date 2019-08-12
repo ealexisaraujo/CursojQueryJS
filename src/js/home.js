@@ -81,38 +81,58 @@ fetch('https://randomuser.me/api/')
   const dramaList = await getData('https://yts.lt/api/v2/list_movies.json?genre=drama')
   const animationList = await getData('https://yts.lt/api/v2/list_movies.json?genre=animation')
   console.log(actionList, dramaList, animationList);
+
+  function videoItemTemplate(movie, category) {
+    return (
+      `<div class="primaryPlaylistItem" data-id="${movie.id}" data-category=${category}>
+        <div class="primaryPlaylistItem-image">
+          <img src="${movie.medium_cover_image}">
+        </div>
+        <h4 class="primaryPlaylistItem-title">
+          ${movie.title}
+        </h4>
+      </div>`
+    )
+  }
+
+  actionList.data.movies.forEach((movie)=> {
+   const HTMLString = videoItemTemplate(movie)
+   console.log(HTMLString);
+  })
   
   const $form = document.getElementById('form');
   const $home = document.getElementById('home');
   const $featuringContainer = document.getElementById('featuring');
+    function featuringTemplate(peli) {
+        return (
+      `
+      <div class="featuring">
+        <div class="featuring-image">
+          <img src="${peli.medium_cover_image}" width="70" height="100" alt="">
+        </div>
+        <div class="featuring-content">
+          <p class="featuring-title">Pelicula encontrada</p>
+          <p class="featuring-album">${peli.title}</p>
+        </div>
+      </div>
+      `
+    )
+  }
   
   const $actionContainer = document.querySelector('action');
   const $dramaContainer = document.getElementById('drama');
   const $animationContainer = document.getElementById('animation');
 
+
+  
   const $modal = document.getElementById('modal');
   const $overlay = document.getElementById('overlay');
   const $hideModal = document.getElementById('hide-modal');
-
+  
   const $modalTitle = $modal.querySelector('h1');
   const $modalImage = $modal.querySelector('img');
   const $modalDescription = $modal.querySelector('p');
 })()
-  //   function featuringTemplate(peli) {
-    //     return (
-//       `
-//       <div class="featuring">
-//         <div class="featuring-image">
-//           <img src="${peli.medium_cover_image}" width="70" height="100" alt="">
-//         </div>
-//         <div class="featuring-content">
-//           <p class="featuring-title">Pelicula encontrada</p>
-//           <p class="featuring-album">${peli.title}</p>
-//         </div>
-//       </div>
-//       `
-//     )
-//   }
 
 //   $form.addEventListener('submit', async (event) => {
 //     event.preventDefault();
@@ -142,18 +162,6 @@ fetch('https://randomuser.me/api/')
 //     }
 //   })
 
-//   function videoItemTemplate(movie, category) {
-//     return (
-//       `<div class="primaryPlaylistItem" data-id="${movie.id}" data-category=${category}>
-//         <div class="primaryPlaylistItem-image">
-//           <img src="${movie.medium_cover_image}">
-//         </div>
-//         <h4 class="primaryPlaylistItem-title">
-//           ${movie.title}
-//         </h4>
-//       </div>`
-//     )
-//   }
 //   function createTemplate(HTMLString) {
 //     const html = document.implementation.createHTMLDocument();
 //     html.body.innerHTML = HTMLString;
