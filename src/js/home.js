@@ -78,9 +78,11 @@ fetch('https://randomuser.me/api/')
       return data;
   }
 
-  const $form = document.getElementById('form');
+  const $form = document.getElementById('form')
+  const $home = document.getElementById('home')
   $form.addEventListener('submit', (event) => {
     event.preventDefault();
+    $home.classList.add('search-active')
   })
 
   const actionList = await getData('https://yts.lt/api/v2/list_movies.json?genre=action&sort_by=download_count')
@@ -121,6 +123,11 @@ fetch('https://randomuser.me/api/')
       const HTMLString = videoItemTemplate(movie)
       const movieElement = createTemplate(HTMLString)
       $container.append(movieElement)
+      //animacion de la carga de las imagenes 
+      const image = movieElement.querySelector('img');
+      image.addEventListener('load', (event) => {
+        event.srcElement.classList.add('fadeIn');
+      })
       addEventClick(movieElement)
       //  console.log(HTMLString);
     })
@@ -136,9 +143,6 @@ fetch('https://randomuser.me/api/')
   renderMovieList(animationList.data.movies, $animationContainer);
   
 
-
-
-  const $home = document.getElementById('home');
   const $featuringContainer = document.getElementById('featuring');
     function featuringTemplate(peli) {
         return (
@@ -154,7 +158,7 @@ fetch('https://randomuser.me/api/')
           </div>
           `
           )
-        }
+    }
         
         
         
@@ -166,6 +170,26 @@ fetch('https://randomuser.me/api/')
   const $modalTitle = $modal.querySelector('h1');
   const $modalImage = $modal.querySelector('img');
   const $modalDescription = $modal.querySelector('p');
+
+  function showModal($element) {
+    $overlay.classList.add('active');
+    $modal.style.animation = 'modalIn .8s forwards';
+    const id = $element.dataset.id;
+    const category = $element.dataset.category;
+    const data = findMovie(id, category);
+
+    $modalTitle.textContent = data.title;
+    $modalImage.setAttribute('src', data.medium_cover_image);
+    $modalDescription.textContent = data.description_full
+  }
+
+  $hideModal.addEventListener('click', hideModal);
+  
+  function hideModal() {
+    $overlay.classList.remove('active');
+    $modal.style.animation = 'modalOut .8s forwards';
+  }
+
 })()
 
 
@@ -212,14 +236,6 @@ fetch('https://randomuser.me/api/')
 //   const animationList = await await cacheExist('animation');
 
 //   // const $home = $('.home .list #item');
-//   const $modal = document.getElementById('modal');
-//   const $overlay = document.getElementById('overlay');
-//   const $hideModal = document.getElementById('hide-modal');
-
-//   const $modalTitle = $modal.querySelector('h1');
-//   const $modalImage = $modal.querySelector('img');
-//   const $modalDescription = $modal.querySelector('p');
-
 //   function findById(list, id) {
 //     return list.find(movie => movie.id === parseInt(id, 10))
 //   }
@@ -236,25 +252,6 @@ fetch('https://randomuser.me/api/')
 //         return findById(animationList, id)
 //       }
 //     }
-//   }
-
-//   function showModal($element) {
-//     $overlay.classList.add('active');
-//     $modal.style.animation = 'modalIn .8s forwards';
-//     const id = $element.dataset.id;
-//     const category = $element.dataset.category;
-//     const data = findMovie(id, category);
-
-//     $modalTitle.textContent = data.title;
-//     $modalImage.setAttribute('src', data.medium_cover_image);
-//     $modalDescription.textContent = data.description_full
-//   }
-
-//   $hideModal.addEventListener('click', hideModal);
-//   function hideModal() {
-//     $overlay.classList.remove('active');
-//     $modal.style.animation = 'modalOut .8s forwards';
-
 //   }
 
 
