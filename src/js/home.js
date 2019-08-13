@@ -136,9 +136,9 @@ function featuringTemplate(peli) {
 
   })
 
-  const actionList = await getData(`${BASE_API}list_movies.json?genre=action&sort_by=download_count`)
-  const dramaList = await getData(`${BASE_API}list_movies.json?genre=drama&sort_by=download_count`)
-  const animationList = await getData(`${BASE_API}list_movies.json?genre=animation&sort_by=download_count`)
+  const { data: { movies: actionList} } = await getData(`${BASE_API}list_movies.json?genre=action&sort_by=download_count`)
+  const { data: { movies: dramaList} } = await getData(`${BASE_API}list_movies.json?genre=drama&sort_by=download_count`)
+  const { data: { movies: animationList} } = await getData(`${BASE_API}list_movies.json?genre=animation&sort_by=download_count`)
   // console.log(actionList, dramaList, animationList);
 
   function videoItemTemplate(movie, category) {
@@ -185,13 +185,13 @@ function featuringTemplate(peli) {
   }
   
   const $actionContainer = document.querySelector('#action');
-  renderMovieList(actionList.data.movies,$actionContainer, 'action')
+  renderMovieList(actionList,$actionContainer, 'action')
 
   const $dramaContainer = document.getElementById('drama');
-  renderMovieList(dramaList.data.movies, $dramaContainer, 'drama');
+  renderMovieList(dramaList, $dramaContainer, 'drama');
 
   const $animationContainer = document.getElementById('animation');
-  renderMovieList(animationList.data.movies, $animationContainer, 'animation');
+  renderMovieList(animationList, $animationContainer, 'animation');
   
   
   const $modal = document.getElementById('modal');
@@ -201,6 +201,24 @@ function featuringTemplate(peli) {
   const $modalTitle = $modal.querySelector('h1');
   const $modalImage = $modal.querySelector('img');
   const $modalDescription = $modal.querySelector('p');
+
+  function findById(list, id) {
+    return list.find(movie => movie.id === parseInt(id, 10))
+  }
+
+  function findMovie(id, category) {
+    switch (category) {
+      case 'action' : {
+        return findById(actionList, id)
+      }
+      case 'drama' : {
+        return findById(dramaList, id)
+      }
+      default: {
+        return findById(animationList, id)
+      }
+    }
+  }
 
   function showModal($element) {
     $overlay.classList.add('active');
@@ -212,6 +230,7 @@ function featuringTemplate(peli) {
     $modalTitle.textContent = data.title;
     $modalImage.setAttribute('src', data.medium_cover_image);
     $modalDescription.textContent = data.description_full
+
   }
 
   $hideModal.addEventListener('click', hideModal);
@@ -220,6 +239,8 @@ function featuringTemplate(peli) {
     $overlay.classList.remove('active');
     $modal.style.animation = 'modalOut .8s forwards';
   }
+
+    
 
 })()
 
@@ -231,13 +252,11 @@ function featuringTemplate(peli) {
 //     if (cacheList) {
 //       return JSON.parse(cacheList);
 //     }
-//     const { data: { movies: data } } = await getData(`${BASE_API}list_movies.json?genre=${category}`)
 //     window.localStorage.setItem(listName, JSON.stringify(data))
 
 //     return data;
 //   }
 
-//   // const { data: { movies: actionList} } = await getData(`${BASE_API}list_movies.json?genre=action`)
 //   const actionList = await cacheExist('action');
 //   // window.localStorage.setItem('actionList', JSON.stringify(actionList))
 
@@ -246,9 +265,6 @@ function featuringTemplate(peli) {
 //   const animationList = await await cacheExist('animation');
 
 //   // const $home = $('.home .list #item');
-//   function findById(list, id) {
-//     return list.find(movie => movie.id === parseInt(id, 10))
-//   }
 
 
 
