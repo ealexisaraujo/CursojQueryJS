@@ -73,10 +73,10 @@
     // action
     // horror
     // animation
-    async function getData(url) {
-      const response = await fetch(url);
-      const data = await response.json()
-      return data;
+  async function getData(url) {
+    const response = await fetch(url);
+    const data = await response.json()
+    return data;
   }
 
   const $form = document.getElementById('form')
@@ -89,7 +89,7 @@
     }
   }
 
-  const BASE_API = 'https://yts.lt/api/v2/'
+const BASE_API = 'https://yts.lt/api/v2/'
 
 function featuringTemplate(peli) {
   return (
@@ -136,11 +136,6 @@ function featuringTemplate(peli) {
 
   })
 
-  const { data: { movies: actionList} } = await getData(`${BASE_API}list_movies.json?genre=action&sort_by=download_count`)
-  const { data: { movies: dramaList} } = await getData(`${BASE_API}list_movies.json?genre=drama&sort_by=download_count`)
-  const { data: { movies: animationList} } = await getData(`${BASE_API}list_movies.json?genre=animation&sort_by=download_count`)
-  // console.log(actionList, dramaList, animationList);
-
   function videoItemTemplate(movie, category) {
     return (
       `<div class="primaryPlaylistItem" data-id="${movie.id}" data-category=${category}>
@@ -160,12 +155,12 @@ function featuringTemplate(peli) {
     return html.body.children[0]
   }
   
-    function addEventClick($element) {
-      $element.addEventListener('click', () => {
-        //alert('click')
-        showModal($element)
-      })
-    }
+  function addEventClick($element) {
+    $element.addEventListener('click', () => {
+      //alert('click')
+      showModal($element)
+    })
+  }
 
   function renderMovieList(list, $container, category) {
     // actionList.data.movies
@@ -183,13 +178,16 @@ function featuringTemplate(peli) {
       //  console.log(HTMLString);
     })
   }
-  
+
+  const { data: { movies: actionList} } = await getData(`${BASE_API}list_movies.json?genre=action&sort_by=download_count`)
   const $actionContainer = document.querySelector('#action');
   renderMovieList(actionList,$actionContainer, 'action')
 
+  const { data: { movies: dramaList} } = await getData(`${BASE_API}list_movies.json?genre=drama&sort_by=download_count`)
   const $dramaContainer = document.getElementById('drama');
   renderMovieList(dramaList, $dramaContainer, 'drama');
 
+  const { data: { movies: animationList} } = await getData(`${BASE_API}list_movies.json?genre=animation&sort_by=download_count`)
   const $animationContainer = document.getElementById('animation');
   renderMovieList(animationList, $animationContainer, 'animation');
   
@@ -202,10 +200,12 @@ function featuringTemplate(peli) {
   const $modalImage = $modal.querySelector('img');
   const $modalDescription = $modal.querySelector('p');
 
+  //Encontrando elementos en la lista
   function findById(list, id) {
     return list.find(movie => movie.id === parseInt(id, 10))
   }
 
+  //Encontrando elementos en la lista
   function findMovie(id, category) {
     switch (category) {
       case 'action' : {
@@ -227,6 +227,7 @@ function featuringTemplate(peli) {
     const category = $element.dataset.category;
     const data = findMovie(id, category);
 
+    //Encontrando elementos en la lista
     $modalTitle.textContent = data.title;
     $modalImage.setAttribute('src', data.medium_cover_image);
     $modalDescription.textContent = data.description_full
