@@ -54,17 +54,18 @@
 //   }
 // })
 
-fetch('https://randomuser.me/api/')
-  .then(function (response) {
-    // console.log(response)
-    return response.json()
-  })
-  .then(function (user) {
-    console.log('user', user.results[0].name.first)
-  })
-  .catch(function() {
-    console.log('algo falló')
-  });
+// Resolviendo promesas
+// fetch('https://randomuser.me/api/')
+//   .then(function (response) {
+//     // console.log(response)
+//     return response.json()
+//   })
+//   .then(function (user) {
+//     console.log('user', user.results[0].name.first)
+//   })
+//   .catch(function() {
+//     console.log('algo falló')
+//   });
   
   // Funciones asincronas
 (async function load() {
@@ -138,7 +139,7 @@ function featuringTemplate(peli) {
   const actionList = await getData(`${BASE_API}list_movies.json?genre=action&sort_by=download_count`)
   const dramaList = await getData(`${BASE_API}list_movies.json?genre=drama&sort_by=download_count`)
   const animationList = await getData(`${BASE_API}list_movies.json?genre=animation&sort_by=download_count`)
-  console.log(actionList, dramaList, animationList);
+  // console.log(actionList, dramaList, animationList);
 
   function videoItemTemplate(movie, category) {
     return (
@@ -166,11 +167,11 @@ function featuringTemplate(peli) {
       })
     }
 
-  function renderMovieList(list, $container) {
+  function renderMovieList(list, $container, category) {
     // actionList.data.movies
     $container.children[0].remove();
     list.forEach((movie)=> {
-      const HTMLString = videoItemTemplate(movie)
+      const HTMLString = videoItemTemplate(movie, category)
       const movieElement = createTemplate(HTMLString)
       $container.append(movieElement)
       //animacion de la carga de las imagenes 
@@ -184,13 +185,13 @@ function featuringTemplate(peli) {
   }
   
   const $actionContainer = document.querySelector('#action');
-  renderMovieList(actionList.data.movies,$actionContainer)
+  renderMovieList(actionList.data.movies,$actionContainer, 'action')
 
   const $dramaContainer = document.getElementById('drama');
-  renderMovieList(dramaList.data.movies, $dramaContainer);
+  renderMovieList(dramaList.data.movies, $dramaContainer, 'drama');
 
   const $animationContainer = document.getElementById('animation');
-  renderMovieList(animationList.data.movies, $animationContainer);
+  renderMovieList(animationList.data.movies, $animationContainer, 'animation');
   
   
   const $modal = document.getElementById('modal');
@@ -249,18 +250,6 @@ function featuringTemplate(peli) {
 //     return list.find(movie => movie.id === parseInt(id, 10))
 //   }
 
-//   function findMovie(id, category) {
-//     switch (category) {
-//       case 'action' : {
-//         return findById(actionList, id)
-//       }
-//       case 'drama' : {
-//         return findById(dramaList, id)
-//       }
-//       default: {
-//         return findById(animationList, id)
-//       }
-//     }
-//   }
+
 
 
