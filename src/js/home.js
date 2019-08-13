@@ -76,7 +76,12 @@
   async function getData(url) {
     const response = await fetch(url);
     const data = await response.json()
-    return data;
+    if (data.data.movie_count > 0) {
+      // aquí se acaba
+      return data;
+    }
+    // si no hay pelis aquí continua
+    throw new Error('No se encontró ningun resultado');
   }
 
   const $form = document.getElementById('form')
@@ -91,21 +96,21 @@
 
 const BASE_API = 'https://yts.lt/api/v2/'
 
-function featuringTemplate(peli) {
-  return (
-`
-  <div class="featuring">
-    <div class="featuring-image">
-      <img src="${peli.medium_cover_image}" width="70" height="100" alt="">
-    </div>
-    <div class="featuring-content">
-      <p class="featuring-title">Pelicula encontrada</p>
-      <p class="featuring-album">${peli.title}</p>
-    </div>
-  </div>
+  function featuringTemplate(peli) {
+    return (
   `
-  )
-}
+    <div class="featuring">
+      <div class="featuring-image">
+        <img src="${peli.medium_cover_image}" width="70" height="100" alt="">
+      </div>
+      <div class="featuring-content">
+        <p class="featuring-title">Pelicula encontrada</p>
+        <p class="featuring-album">${peli.title}</p>
+      </div>
+    </div>
+    `
+    )
+  }
 
   $form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -179,15 +184,33 @@ function featuringTemplate(peli) {
     })
   }
 
-  const { data: { movies: actionList} } = await getData(`${BASE_API}list_movies.json?genre=action&sort_by=download_count`)
+  async function cacheExist(category) {
+    const listName = `${category}List`;
+    const cacheList = window.localStorage.getItem(listName);
+
+    if (cacheList) {
+      return JSON.parse(cacheList);
+    }
+    const { data: { movies: data } } = await getData(`${BASE_API}list_movies.json?genre=${category}&sort_by=download_count`)
+    window.localStorage.setItem(listName, JSON.stringify(data))
+
+    return data;
+  }
+
+  // const { data: { movies: actionList} } = await getData(`${BASE_API}list_movies.json?genre=action&sort_by=download_count`)
+  //Local Storage
+  // window.localStorage.setItem('actionList', JSON.stringify(actionList))
+  const actionList = await cacheExist('action');
   const $actionContainer = document.querySelector('#action');
   renderMovieList(actionList,$actionContainer, 'action')
 
-  const { data: { movies: dramaList} } = await getData(`${BASE_API}list_movies.json?genre=drama&sort_by=download_count`)
+  // const { data: { movies: dramaList} } = await getData(`${BASE_API}list_movies.json?genre=drama&sort_by=download_count`)
+  const dramaList = await await cacheExist('drama');
   const $dramaContainer = document.getElementById('drama');
   renderMovieList(dramaList, $dramaContainer, 'drama');
 
-  const { data: { movies: animationList} } = await getData(`${BASE_API}list_movies.json?genre=animation&sort_by=download_count`)
+  // const { data: { movies: animationList} } = await getData(`${BASE_API}list_movies.json?genre=animation&sort_by=download_count`)
+  const animationList = await await cacheExist('animation');
   const $animationContainer = document.getElementById('animation');
   renderMovieList(animationList, $animationContainer, 'animation');
   
@@ -241,7 +264,36 @@ function featuringTemplate(peli) {
     $modal.style.animation = 'modalOut .8s forwards';
   }
 
-    
+  async function getUser (url) {
+    const response = await fetch(url)
+    const data = await response.json()
+    return data
+  }
+
+  function templateUser(name, picture) {
+    return (
+      `<li class='playlistFriends-item'>
+      <a href="#">
+        <img src="${picture}" alt="echame la culpa" />
+        <span>
+          ${name.first} ${name.last}
+        </span>
+      </a>
+      </li>`
+    )
+  }
+
+  function addUserToList(list) {
+    list.forEach((user) => {
+      const HTMLString = templateUser(user.name, user.picture.thumbnail)
+      const userElement = createTemplate(HTMLString)
+      $userList.append(userElement)
+    })
+  }
+
+  const $userList = document.getElementById('userList')
+  const userList = await getUser('https://randomuser.me/api/?results=10')
+  addUserToList(userList.results)
 
 })()
 
@@ -266,7 +318,3 @@ function featuringTemplate(peli) {
 //   const animationList = await await cacheExist('animation');
 
 //   // const $home = $('.home .list #item');
-
-
-
-
