@@ -197,22 +197,56 @@ const BASE_API = 'https://yts.lt/api/v2/'
     return data;
   }
 
+  const $actionContainer = document.querySelector('#action');
+  const $dramaContainer = document.getElementById('drama');
+  const $animationContainer = document.getElementById('animation');
+
+  // Resetear los datos
+
+  async function updateData(category, container) {
+    const list = await cacheExist(category);
+    renderMovieList(list, container, category);
+    return list;
+  }
+
+  const $links = document.getElementsByClassName('link');
+  
+  /* let actionList = await updateData('action', $actionContainer);
+  let dramaList = await updateData('drama', $dramaContainer);
+  let animationList = await updateData('animation', $animationContainer);
+ */
+  let [actionList, dramaList, animationList] = await Promise.all([
+    updateData('action', $actionContainer),
+    updateData('drama', $dramaContainer),
+    updateData('animation', $animationContainer)
+  ]);
+
+  [].forEach.call($links, element => {
+    element.addEventListener('click', event => {
+      const updateTerm = event.target.dataset.update;
+      localStorage.removeItem(`${updateTerm}List`)
+      location.reload()
+    })
+  })
+
+  // Resetear los datos
+
   // const { data: { movies: actionList} } = await getData(`${BASE_API}list_movies.json?genre=action&sort_by=download_count`)
   //Local Storage
   // window.localStorage.setItem('actionList', JSON.stringify(actionList))
-  const actionList = await cacheExist('action');
-  const $actionContainer = document.querySelector('#action');
-  renderMovieList(actionList,$actionContainer, 'action')
+  // const actionList = await cacheExist('action');
+  // const $actionContainer = document.querySelector('#action');
+  // renderMovieList(actionList,$actionContainer, 'action')
 
-  // const { data: { movies: dramaList} } = await getData(`${BASE_API}list_movies.json?genre=drama&sort_by=download_count`)
-  const dramaList = await await cacheExist('drama');
-  const $dramaContainer = document.getElementById('drama');
-  renderMovieList(dramaList, $dramaContainer, 'drama');
+  // // const { data: { movies: dramaList} } = await getData(`${BASE_API}list_movies.json?genre=drama&sort_by=download_count`)
+  // const dramaList = await await cacheExist('drama');
+  // const $dramaContainer = document.getElementById('drama');
+  // renderMovieList(dramaList, $dramaContainer, 'drama');
 
-  // const { data: { movies: animationList} } = await getData(`${BASE_API}list_movies.json?genre=animation&sort_by=download_count`)
-  const animationList = await await cacheExist('animation');
-  const $animationContainer = document.getElementById('animation');
-  renderMovieList(animationList, $animationContainer, 'animation');
+  // // const { data: { movies: animationList} } = await getData(`${BASE_API}list_movies.json?genre=animation&sort_by=download_count`)
+  // const animationList = await await cacheExist('animation');
+  // const $animationContainer = document.getElementById('animation');
+  // renderMovieList(animationList, $animationContainer, 'animation');
   
   
   const $modal = document.getElementById('modal');

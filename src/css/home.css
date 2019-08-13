@@ -253,3 +253,7 @@ body {
     opacity: 1;
   }
 }
+
+.link {
+  cursor: pointer;
+}
